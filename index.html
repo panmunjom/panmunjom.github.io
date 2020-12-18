@@ -98,8 +98,15 @@
       }
     });
 
+    var commentHashes = [];
+    var allList = getElem('allComments');
+    var myList = getElem('myComments');
+
     async function startApp() {
       try {
+        removeAllChildNodes(allList);
+        removeAllChildNodes(myList);
+
         chainId =  parseInt(await ethereum.request({method: 'eth_chainId'}));
         getElem('networkName').innerText = networkList[chainId];
         getAccount();
@@ -195,13 +202,7 @@
       }
     }    
 
-    var commentHashes = [];
-    var allList = getElem('allComments');
-    var myList = getElem('myComments');
-
-    function getComments() {
-      removeAllChildNodes(allList);
-      removeAllChildNodes(myList);
+    async function getComments() {
       var numComments = await declaration.methods.numComments().call()
       var startingBlock = await declaration.methods.blockByCounter(1).call();
       getElem('numComments').innerHTML = numComments;
