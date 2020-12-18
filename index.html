@@ -64,7 +64,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.2.11/dist/web3.min.js"></script>
   <!-- script src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script -->
-  <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
+  <!-- script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin="anonymous" />
   
   <script>
     var abi = [{"anonymous":false,"inputs":[{"indexed":true,"name":"sender","type":"address"},{"indexed":false,"name":"comment","type":"string"},{"indexed":false,"name":"timestamp","type":"uint256"},{"indexed":false,"name":"count","type":"uint256"}],"name":"Commented","type":"event"},{"constant":false,"inputs":[{"name":"comment","type":"string"}],"name":"makeComment","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"blockByCounter","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"content","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numComments","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
@@ -81,6 +83,7 @@
       42: "Kovan 테스트넷",
       1337: "Gnache 로컬넷"
     };
+    var modal = new tingle.modal();
 
     window.addEventListener('load', function() {
 
@@ -148,9 +151,13 @@
     function watchChainAccount() {
       web3.currentProvider.on("accountsChanged", (accounts) => {
         startApp();
+        modal.setContent("<p>어카운트가 변경되었습니다!</p><button onclick='location.reload()'>다시 로딩하기</button>");
+        modal.open();
       });
       web3.currentProvider.on("chainChanged", (chainId) => {
         startApp();
+        modal.setContent("<p>네트워크(체인)이 변경되었습니다!</p><button onclick='location.reload()'>다시 로딩하기</button>");
+        modal.open();
       });
     }
 
