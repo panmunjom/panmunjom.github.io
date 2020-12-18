@@ -133,7 +133,7 @@
         getElem('contractAddr').innerHTML = getLink(contractAddress);
 
         declaration = new web3.eth.Contract(abi, contractAddress);
-        getComments();
+        await getComments();
         watchChainAccount();        
       } catch(err) {console.log(err);}
     }
@@ -199,7 +199,7 @@
     var allList = getElem('allComments');
     var myList = getElem('myComments');
 
-    async function getComments() {
+    function getComments() {
       removeAllChildNodes(allList);
       removeAllChildNodes(myList);
       var numComments = await declaration.methods.numComments().call()
