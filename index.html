@@ -138,11 +138,10 @@
       } catch(err) {console.log(err);}
     }
 
-    async function watchChainAccount() {
+    function watchChainAccount() {
       web3.currentProvider.on("accountsChanged", (accounts) => {
-          startApp();
+        startApp();
       });
-
       web3.currentProvider.on("chainChanged", (chainId) => {
         startApp();
       });
@@ -190,7 +189,19 @@
       .on('error', (error) => {console.log(error)})
     }
 
+    function removeAllChildNodes(parent) {
+      while (parent.firstChild) {
+         parent.removeChild(parent.firstChild);
+      }
+    }    
+
+    var commentHashes = [];
+    var allList = getElem('allComments');
+    var myList = getElem('myComments');
+
     async function getComments() {
+      removeAllChildNodes(allList);
+      removeAllChildNodes(myList);
       var numComments = await declaration.methods.numComments().call()
       var startingBlock = await declaration.methods.blockByCounter(1).call();
       getElem('numComments').innerHTML = numComments;
@@ -203,12 +214,10 @@
       .on('error', function(error, receipt){console.log(error);}) 
     }
 
-    var commentHashes = [];
     function commentEventParser(r){
       if (commentHashes.includes(r.transactionHash)) {return}
       commentHashes.push(r.transactionHash);
-
-      var allList = getElem('allComments');
+      
       var newItem = document.createElement('li');
       var txLink = document.createElement('span');
       txLink.innerHTML = "tx: " + getLink(r.transactionHash);
@@ -219,7 +228,6 @@
 
       newItem.appendChild(newPre);
       if (r.returnValues.sender == myAddr) {
-        var myList = getElem('myComments');
         var newMyItem = newItem.cloneNode(true);
         if (myList.length == 0) {
           myList.appendChild(newMyItem);
