@@ -134,7 +134,18 @@
 
         declaration = new web3.eth.Contract(abi, contractAddress);
         getComments();
+        watchChainAccount();        
       } catch(err) {console.log(err);}
+    }
+
+    async function watchChainAccount() {
+      web3.currentProvider.on("accountsChanged", (accounts) => {
+          startApp();
+      });
+
+      web3.currentProvider.on("chainChanged", (chainId) => {
+        startApp();
+      });
     }
 
     function connectAccount() {
