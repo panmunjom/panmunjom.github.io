@@ -159,6 +159,18 @@
         modal.setContent("<p>네트워크(체인)이 변경되었습니다!</p><button onclick='location.reload()'>다시 로딩하기</button>");
         modal.open();
       });
+      web3.currentProvider.on("connect", (connectInfo) => {
+        //startApp();
+        console.log(connectInfo);
+        modal.setContent("<p>Etheruem Provider가 연결되었습니다.</p>");
+        modal.open();
+      });      
+      web3.currentProvider.on("disconnect", (error) => {
+        //startApp();
+        console.log(error);
+        modal.setContent("<p>Ethereum Provider가 연결이 끊어졌습니다.</p><button onclick='location.reload()'>다시 로딩하기</button>");
+        modal.open();
+      });      
     }
 
     function connectAccount() {
